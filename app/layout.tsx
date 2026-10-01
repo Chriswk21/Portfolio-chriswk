@@ -28,7 +28,7 @@ export default function RootLayout({
       <body className="min-h-screen">
         {/* Without JS the scroll reveals never fire; keep content visible. */}
         <noscript>
-          <style>{`.slide-in{opacity:1!important;transform:none!important}.slide-in .rule{transform:none!important}`}</style>
+          <style>{`.slide-in,.rv{opacity:1!important;transform:none!important}.slide-in .rule,.rv-line,.rv-mask>span{transform:none!important}.rv-wipe{clip-path:none!important}`}</style>
         </noscript>
         {children}
       </body>

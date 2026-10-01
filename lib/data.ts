@@ -144,6 +144,12 @@ export const education = [
   },
 ];
 
+// From the CV's Technical Skills block.
+export const tools = [
+  "Python", "C/C++", "Java", "SQL", "Next.js", "React", "HTML/CSS", "REST APIs",
+  "Flutter", "Node.js", "Supabase", "PostgreSQL", "MySQL", "Vercel", "Railway", "Git",
+];
+
 export const skills = [
   {
     title: "Software Engineering",

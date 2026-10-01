@@ -3,8 +3,10 @@ import path from "node:path";
 import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
 import { Intro } from "@/components/intro";
+import { Marquee } from "@/components/marquee";
 import { Projects } from "@/components/projects";
 import { Skillset } from "@/components/skillset";
+import { Background } from "@/components/background";
 import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
 
@@ -25,8 +27,10 @@ export default function Home() {
       <main>
         <Hero photo={findPhoto()} />
         <Intro />
+        <Marquee />
         <Projects />
         <Skillset />
+        <Background />
         <Contact />
       </main>
       <Footer />
