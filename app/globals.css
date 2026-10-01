@@ -1,102 +1,126 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg-dark: #090d16;
-  --color-cyan-glow: #00f2fe;
-  --color-violet-glow: #8a2be2;
-  --color-slate-text: #94a3b8;
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular;
-  
-  --animate-glow-slow-1: glow-slow-1 15s infinite alternate;
-  --animate-glow-slow-2: glow-slow-2 20s infinite alternate;
-  
-  @keyframes glow-slow-1 {
-    0% {
-      transform: translate(0px, 0px) scale(1);
-    }
-    50% {
-      transform: translate(50px, -50px) scale(1.2);
-    }
-    100% {
-      transform: translate(-25px, 25px) scale(0.85);
-    }
-  }
-  
-  @keyframes glow-slow-2 {
-    0% {
-      transform: translate(0px, 0px) scale(1.1);
-    }
-    50% {
-      transform: translate(-40px, 60px) scale(0.9);
-    }
-    100% {
-      transform: translate(30px, -20px) scale(1.15);
-    }
-  }
+  /* Palette: warm paper, ink, one accent. No gradients. */
+  --color-paper: #efede9;
+  --color-ink: #0f0f0e;
+  --color-mute: #8a8984;
+  --color-line: #d3d0ca;
+  --color-line-dark: #2a2a28;
+  --color-accent: #d42a2a;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+
+  /* Motion tokens (from the animate skill — do not invent new curves) */
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 :root {
-  --background: #090d16;
-  --foreground: #ffffff;
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-paper);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
+  background: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #090d16;
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 242, 254, 0.5);
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
-/* Selection Highlight */
 ::selection {
-  background: rgba(138, 43, 226, 0.3);
-  color: #00f2fe;
+  background: var(--color-ink);
+  color: var(--color-paper);
 }
 
-/* Bento Grid Card glow effect */
-.bento-card-glow {
-  position: relative;
-}
-.bento-card-glow::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(to bottom right, rgba(0, 242, 254, 0.15), rgba(138, 43, 226, 0.15));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  transition: opacity 0.5s ease, background 0.5s ease;
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
 }
 
-.bento-card-glow:hover::before {
-  background: linear-gradient(to bottom right, rgba(0, 242, 254, 0.55), rgba(138, 43, 226, 0.55));
+/* Display type: tight tracking + leading for large sizes (apple-design §15) */
+.display {
+  letter-spacing: -0.035em;
+  line-height: 0.95;
 }
 
-/* Kinetic Background Grid Pattern */
-.bg-grid-pattern {
-  background-size: 50px 50px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+/* ---------- Hero entrance (CSS: predetermined, runs off main thread) ---------- */
+@keyframes rise {
+  from { transform: translateY(105%); }
+  to   { transform: translateY(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes wipe {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  .anim-rise    { animation: rise 900ms var(--ease-out) both; }
+  .anim-fade-up { animation: fade-up 600ms var(--ease-out) both; }
+  .anim-wipe    { animation: wipe 1100ms var(--ease-in-out) both; }
+}
+/* Tier 2: movement replaced by a short fade */
+@media (prefers-reduced-motion: reduce) {
+  .anim-rise,
+  .anim-fade-up,
+  .anim-wipe { animation: fade 200ms ease both; }
+}
+
+/* ---------- Skillset: rows enter from the right on scroll ---------- */
+.slide-in {
+  opacity: 0;
+  transform: translateX(min(22vw, 260px));
+  transition:
+    opacity 700ms var(--ease-out),
+    transform 1000ms var(--ease-out);
+}
+.slide-in.is-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* The row's top rule draws in from the right edge */
+.slide-in .rule {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 1100ms var(--ease-out);
+}
+.slide-in.is-in .rule {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-in,
+  .slide-in .rule {
+    transform: none;
+    transition: opacity 200ms ease;
+  }
+}
+
+/* Reduced-motion safety net (accessible-animation). Durations are not
+   zeroed globally so the intentional Tier-2/3 fades above survive. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}

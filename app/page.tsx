@@ -1,20 +1,35 @@
-import { Navbar } from "@/components/navbar";
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { Header } from "@/components/header";
 import { Hero } from "@/components/hero";
-import { Skills } from "@/components/skills";
+import { Intro } from "@/components/intro";
 import { Projects } from "@/components/projects";
+import { Skillset } from "@/components/skillset";
+import { Contact } from "@/components/contact";
 import { Footer } from "@/components/footer";
+
+// Drop a portrait at public/images/profile.jpg and the hero picks it up.
+function findPhoto(): string | null {
+  for (const ext of ["jpg", "jpeg", "png", "webp"]) {
+    if (existsSync(path.join(process.cwd(), "public", "images", `profile.${ext}`))) {
+      return `/images/profile.${ext}`;
+    }
+  }
+  return null;
+}
 
 export default function Home() {
   return (
     <>
-      <Navbar />
-      <main className="flex-1">
-        <Hero />
-        <Skills />
+      <Header />
+      <main>
+        <Hero photo={findPhoto()} />
+        <Intro />
         <Projects />
+        <Skillset />
+        <Contact />
       </main>
       <Footer />
     </>
   );
 }
-

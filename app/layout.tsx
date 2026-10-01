@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Chris William Kurniawan | Software Engineering Student & Developer",
-  description: "Portfolio of Chris William Kurniawan, a Software Engineering student specializing in high-performance Web Development (React/Next.js), cross-platform Mobile Apps (Flutter), and robust Backend Ecosystems (Node.js/NestJS).",
+  title: "Chris William Kurniawan — Software Engineer",
+  description:
+    "Computer Science student at BINUS University building management software, POS systems, and workflow automation for real operations.",
 };
 
 export default function RootLayout({
@@ -23,11 +24,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className="min-h-screen">
+        {/* Without JS the scroll reveals never fire; keep content visible. */}
+        <noscript>
+          <style>{`.slide-in{opacity:1!important;transform:none!important}.slide-in .rule{transform:none!important}`}</style>
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }
