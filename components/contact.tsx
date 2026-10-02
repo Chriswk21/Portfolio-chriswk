@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, type FormEvent } from 'react';
+import { useRef, useState, type FormEvent } from 'react';
 import { profile } from '@/lib/data';
+import { Donut } from './donut';
 import { InView, MaskText, Roll } from './motion';
 import { d } from '@/lib/stagger';
 
@@ -16,6 +17,7 @@ const reasons = ['Internship', 'Freelance project', 'Full-time role', 'Just sayi
  */
 export function Contact() {
   const [sent, setSent] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -41,9 +43,19 @@ export function Contact() {
   );
 
   return (
-    <section id="contact" className="scroll-mt-20 px-6 py-24 md:px-10 md:py-32">
-      <InView className="mx-auto max-w-[620px]" margin="0px 0px -15% 0px">
-        <div className="rv-wipe bg-ink p-6 text-paper sm:p-10">
+    <section ref={sectionRef} id="contact" className="scroll-mt-20 px-6 py-24 md:px-10 md:py-32">
+      <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-center gap-6 md:grid-cols-12 md:gap-8">
+      {/* Donut gets its own square so the whole ring is always visible */}
+      <div className="relative hidden aspect-square w-full md:order-2 md:col-span-6 md:block lg:-mr-10 lg:w-[calc(100%+2.5rem)]">
+        <Donut hoverTarget={sectionRef} />
+      </div>
+      <InView className="relative w-full md:col-span-6" margin="0px 0px -15% 0px">
+        <div className="rv-wipe relative overflow-hidden bg-ink p-6 text-paper sm:p-10">
+          {/* Mobile: the donut lives inside the card, faint, behind the form */}
+          <div className="md:hidden">
+            <Donut hoverTarget={sectionRef} tone="paper" />
+          </div>
+          <div className="relative">
           <p className="rv font-mono text-[10px] uppercase tracking-widest text-paper/50" style={d(0, 0, 350)}>
             (Leave your details)
           </p>
@@ -121,8 +133,10 @@ export function Contact() {
               </p>
             </div>
           </form>
+          </div>
         </div>
       </InView>
+      </div>
     </section>
   );
 }
