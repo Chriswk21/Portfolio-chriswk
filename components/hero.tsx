@@ -82,19 +82,24 @@ export function Hero({ photo }: { photo: string | null }) {
 
       {/* Right: portrait, or a fact sheet until public/images/profile.jpg exists */}
       <div
-        className="anim-wipe relative aspect-[4/5] w-full overflow-hidden bg-ink md:col-span-7 md:aspect-auto md:min-h-[78vh]"
+        className="anim-wipe relative flex w-full flex-col overflow-hidden bg-ink md:col-span-7 md:min-h-[78vh] md:flex-row-reverse"
         style={delay(200)}
       >
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={photo}
-            alt="Portrait of Chris William Kurniawan"
-            className="anim-settle h-full w-full object-cover"
-            style={delay(200)}
-          />
-        ) : (
-          <div className="flex h-full flex-col justify-between p-6 text-paper md:p-10">
+        {/* Portrait sits inside the profile panel. The source is narrow (342px), so it
+            gets a tall slot close to its native width instead of a full-bleed stretch. */}
+        {photo && (
+          <div className="relative aspect-[4/5] w-full shrink-0 overflow-hidden md:aspect-auto md:w-[46%]">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={photo}
+              alt="Portrait of Chris William Kurniawan"
+              className="anim-settle absolute inset-0 h-full w-full object-cover object-[50%_22%] md:object-[50%_30%]"
+              style={delay(200)}
+            />
+          </div>
+        )}
+
+        <div className="flex min-h-[420px] flex-1 flex-col justify-between p-6 text-paper md:min-h-0 md:p-10">
             <div className="flex items-start justify-between">
               <span className="anim-fade-up font-mono text-[11px] uppercase tracking-widest text-paper/50" style={delay(900)}>
                 (Profile)
@@ -112,7 +117,7 @@ export function Hero({ photo }: { photo: string | null }) {
               CS
             </p>
 
-            <dl className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
+            <dl className={`grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 ${photo ? 'md:grid-cols-1 md:gap-y-5' : ''}`}>
               {facts.map((f, i) => (
                 <div key={f.label} className="anim-fade-up border-t border-line-dark pt-3" style={delay(1050 + i * 80)}>
                   <dt className="font-mono text-[10px] uppercase tracking-widest text-paper/50">{f.label}</dt>
@@ -121,7 +126,6 @@ export function Hero({ photo }: { photo: string | null }) {
               ))}
             </dl>
           </div>
-        )}
       </div>
     </section>
   );
