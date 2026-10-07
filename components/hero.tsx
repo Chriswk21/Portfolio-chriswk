@@ -109,14 +109,6 @@ export function Hero({ photo }: { photo: string | null }) {
               </span>
             </div>
 
-            <p
-              aria-hidden
-              className="anim-fade-up display hidden select-none text-[clamp(5rem,14vw,11rem)] font-medium text-paper/[0.07] sm:block"
-              style={delay(1000)}
-            >
-              CS
-            </p>
-
             <dl className={`grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8 ${photo ? 'md:grid-cols-1 md:gap-y-5' : ''}`}>
               {facts.map((f, i) => (
                 <div key={f.label} className="anim-fade-up border-t border-line-dark pt-3" style={delay(1050 + i * 80)}>
